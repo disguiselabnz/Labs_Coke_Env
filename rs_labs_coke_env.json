@@ -10,6 +10,248 @@
     ],
     "schema": [
         {
+            "name": "Coke_Env_02",
+            "parameters": [
+                {
+                    "group": "Fog",
+                    "displayName": "3 - Fog Density",
+                    "key": "3 - Fog Density",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 0.10000000149011612,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 0.009999999776482582
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Fog",
+                    "displayName": "3 - Fog Opacity",
+                    "key": "3 - Fog Opacity",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 1.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 0.15000000596046449
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Location x",
+                    "key": "3 - Mannequin Location_x",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": -670.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Location y",
+                    "key": "3 - Mannequin Location_y",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 295.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Location z",
+                    "key": "3 - Mannequin Location_z",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": -28.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Rotation",
+                    "key": "3 - Mannequin Rotation",
+                    "type": 0,
+                    "min": -360.0,
+                    "max": 360.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": -115.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Scale x",
+                    "key": "3 - Mannequin Scale_x",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 50.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 1.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Scale y",
+                    "key": "3 - Mannequin Scale_y",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 50.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 1.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Mannequin Scale z",
+                    "key": "3 - Mannequin Scale_z",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 50.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 1.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Mannequins",
+                    "displayName": "3 - Hide Shadow",
+                    "key": "3 - Hide Shadow",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 1.0,
+                    "step": 1.0,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 0.0
+                    },
+                    "options": [
+                        "Off",
+                        "On"
+                    ],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Default",
+                    "displayName": "Carpet Locations x",
+                    "key": "Carpet Locations_x",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": -670.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Default",
+                    "displayName": "Carpet Locations y",
+                    "key": "Carpet Locations_y",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 310.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Default",
+                    "displayName": "Carpet Locations z",
+                    "key": "Carpet Locations_z",
+                    "type": 0,
+                    "min": -10000.0,
+                    "max": 10000.0,
+                    "step": 0.0010000000474974514,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": -44.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                }
+            ]
+        },
+        {
             "name": "Coke_Env",
             "parameters": [
                 {
@@ -265,248 +507,6 @@
                         "Off",
                         "On"
                     ],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                }
-            ]
-        },
-        {
-            "name": "Coke_Env_02",
-            "parameters": [
-                {
-                    "group": "Fog",
-                    "displayName": "3 - Fog Density",
-                    "key": "3 - Fog Density",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 0.10000000149011612,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 0.009999999776482582
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Fog",
-                    "displayName": "3 - Fog Opacity",
-                    "key": "3 - Fog Opacity",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 1.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 0.15000000596046449
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Location x",
-                    "key": "3 - Mannequin Location_x",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": -670.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Location y",
-                    "key": "3 - Mannequin Location_y",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 295.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Location z",
-                    "key": "3 - Mannequin Location_z",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": -28.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Rotation",
-                    "key": "3 - Mannequin Rotation",
-                    "type": 0,
-                    "min": -360.0,
-                    "max": 360.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": -115.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Scale x",
-                    "key": "3 - Mannequin Scale_x",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 50.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 1.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Scale y",
-                    "key": "3 - Mannequin Scale_y",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 50.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 1.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Mannequin Scale z",
-                    "key": "3 - Mannequin Scale_z",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 50.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 1.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Mannequins",
-                    "displayName": "3 - Hide Shadow",
-                    "key": "3 - Hide Shadow",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 1.0,
-                    "step": 1.0,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 0.0
-                    },
-                    "options": [
-                        "Off",
-                        "On"
-                    ],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Default",
-                    "displayName": "Carpet Locations x",
-                    "key": "Carpet Locations_x",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": -670.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Default",
-                    "displayName": "Carpet Locations y",
-                    "key": "Carpet Locations_y",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 310.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Default",
-                    "displayName": "Carpet Locations z",
-                    "key": "Carpet Locations_z",
-                    "type": 0,
-                    "min": -10000.0,
-                    "max": 10000.0,
-                    "step": 0.0010000000474974514,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": -44.0
-                    },
-                    "options": [],
                     "dmxOffset": -1,
                     "dmxType": 2,
                     "noSequence": false,
