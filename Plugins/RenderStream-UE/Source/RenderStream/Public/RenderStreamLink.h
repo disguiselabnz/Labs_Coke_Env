@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <memory>
 
+#include "UObject/SoftObjectPtr.h"
+#include "Animation/Skeleton.h"
 #include "GeneralProjectSettings.h"
 #include "Runtime/Launch/Resources/Version.h"
 
@@ -26,6 +28,7 @@ typedef uint64_t VkDeviceSize;
 typedef struct VkSemaphore_T* VkSemaphore;
 
 #define RS_PLUGIN_NAME "RenderStream-UE"
+#define RS_PLUGIN_VERSION "RS2.0-UE5.1-v0"
 
 class RenderStreamLink
 {
@@ -100,6 +103,16 @@ public:
         REMOTEPARAMETER_READ_ONLY = 2
     };
 
+    enum SenderFrameType
+    {
+        RS_FRAMETYPE_HOST_MEMORY,
+        RS_FRAMETYPE_DX11_TEXTURE,
+        RS_FRAMETYPE_DX12_TEXTURE,
+        RS_FRAMETYPE_OPENGL_TEXTURE,
+        RS_FRAMETYPE_VULKAN_TEXTURE,
+        RS_FRAMETYPE_UNKNOWN
+    };
+
     typedef uint64_t StreamHandle;
     typedef uint64_t CameraHandle;
     typedef void (*logger_t)(const char*);
@@ -107,10 +120,7 @@ public:
 #pragma pack(push, 4)
     typedef struct
     {
-        float virtualZoomScale;
         uint8_t virtualReprojectionRequired;
-        float xRealCamera, yRealCamera, zRealCamera;
-        float rxRealCamera, ryRealCamera, rzRealCamera;
     } D3TrackingData;  // Tracking data required by d3 but not used to render content
 
     typedef struct
@@ -124,6 +134,8 @@ public:
         float cx, cy;
         float nearZ, farZ;
         float orthoWidth;  // If > 0, an orthographic camera should be used
+        float aperture; // Apply if > 0
+        float focusDistance;  // Apply if > 0
         D3TrackingData d3Tracking;
     } CameraData;
 
@@ -144,11 +156,11 @@ public:
         CameraData camera;
     } CameraResponseData;
 
-
     typedef struct
     {
         uint8_t* data;
         uint32_t stride;
+        RSPixelFormat format;
     } HostMemoryData;
 
     typedef struct
@@ -177,21 +189,20 @@ public:
         uint64_t waitSemaphoreValue;
         VkSemaphore signalSemaphore;
         uint64_t signalSemaphoreValue;
-    } VulkanDataStructure;
+    } VulkanData;
 
     typedef struct
     {
-        VulkanDataStructure* image;
-    } VulkanData;
-
-    typedef union
-    {
-        HostMemoryData cpu;
-        Dx11Data dx11;
-        Dx12Data dx12;
-        OpenGlData gl;
-        VulkanData vk;
-    } SenderFrameTypeData;
+        SenderFrameType type;
+        union
+        {
+            HostMemoryData cpu;
+            Dx11Data dx11;
+            Dx12Data dx12;
+            OpenGlData gl;
+            VulkanData vk;
+        };
+    } SenderFrame;
 
     typedef struct
     {
@@ -222,6 +233,8 @@ public:
         uint32_t height;
         RSPixelFormat format;
         ProjectionClipping clipping;
+        const char* mappingName;
+        int32_t iFragment;
     } StreamDescription;
 
     typedef struct
@@ -238,7 +251,8 @@ public:
         RS_PARAMETER_TRANSFORM, // 4x4 TRS matrix
         RS_PARAMETER_TEXT,
         RS_PARAMETER_EVENT,
-        RS_PARAMETER_LAST= RS_PARAMETER_EVENT
+        RS_PARAMETER_SKELETON,
+        RS_PARAMETER_LAST= RS_PARAMETER_SKELETON
     };
 
     enum RemoteParameterDmxType
@@ -315,6 +329,7 @@ public:
     {
         const char* engineName;
         const char* engineVersion;
+        const char* pluginVersion;
         const char* info;
         Channels channels;
         Scenes scenes;
@@ -328,18 +343,8 @@ public:
 
 #pragma pack(pop)
 
-#define RENDER_STREAM_VERSION_MAJOR 1
-#define RENDER_STREAM_VERSION_MINOR 30
-
-    enum SenderFrameType
-    {
-        RS_FRAMETYPE_HOST_MEMORY,
-        RS_FRAMETYPE_DX11_TEXTURE,
-        RS_FRAMETYPE_DX12_TEXTURE,
-        RS_FRAMETYPE_OPENGL_TEXTURE,
-        RS_FRAMETYPE_VULKAN_TEXTURE,
-        RS_FRAMETYPE_UNKNOWN
-    };
+#define RENDER_STREAM_VERSION_MAJOR 2
+#define RENDER_STREAM_VERSION_MINOR 0
 
     enum UseDX12SharedHeapFlag
     {
@@ -356,6 +361,40 @@ public:
         uint32_t textDataCount;
         const char** textData;
     } FrameResponseData;
+
+    typedef struct
+    {
+        float x, y, z;
+        float rx, ry, rz, rw;
+    } Transform;
+
+    typedef struct
+    {
+        uint64_t id;
+        Transform transform;
+    } SkeletonJointPose;
+
+    typedef struct
+    {
+        uint64_t id;
+        uint64_t parentId;
+        Transform transform;
+    } SkeletonJointDesc;
+
+    typedef struct
+    {
+        uint32_t version;
+        SkeletonJointDesc* joints;
+    } SkeletonLayout;
+
+    typedef struct
+    {
+        uint64_t layoutId;
+        uint32_t layoutVersion;
+        char reservedBytes[8];
+        Transform rootTransform;
+        SkeletonJointPose* joints;
+    } SkeletonPose;
 
     RENDERSTREAM_API static RenderStreamLink& instance();
 
@@ -395,13 +434,17 @@ private:
 
     typedef RS_ERROR rs_getFrameParametersFn(uint64_t schemaHash, /*Out*/void* outParameterData, uint64_t outParameterDataSize);  // returns the remote parameters for this frame.
     typedef RS_ERROR rs_getFrameImageDataFn(uint64_t schemaHash, /*Out*/ImageFrameData* outParameterData, uint64_t outParameterDataCount);  // returns the remote image data for this frame.
-    typedef RS_ERROR rs_getFrameImageFn(int64_t imageId, SenderFrameType frameType, /*InOut*/SenderFrameTypeData data); // fills in (data) with the remote image
+    typedef RS_ERROR rs_getFrameImageFn(int64_t imageId, /*InOut*/const SenderFrame* data); // fills in (data) with the remote image
     typedef RS_ERROR rs_getFrameTextFn(uint64_t schemaHash, uint32_t textParamIndex, /*Out*/const char** outTextPtr); // // returns the remote text data (pointer only valid until next rs_awaitFrameData)
+    
+    typedef RS_ERROR rs_getSkeletonLayoutFn(uint64_t schemaHash, uint64_t id, /*Out*/SkeletonLayout* layout, /*Out*/int* numJoints);
+    typedef RS_ERROR rs_getSkeletonJointNamesFn(uint64_t schemaHash, uint64_t layoutId, /*Out*/ const char** names, /*Out*/int** nameByteLengths, /*Out*/int* numJoints);
+    typedef RS_ERROR rs_getSkeletonJointPosesFn(uint64_t schemaHash, uint32_t poseParamIndex, /*Out*/SkeletonPose* pose, /*Out*/int* numJoints);
 
     typedef RS_ERROR rs_getFrameCameraFn(StreamHandle streamHandle, /*Out*/CameraData* outCameraData);  // returns the CameraData for this stream, or RS_ERROR_NOTFOUND if no camera data is available for this stream on this frame
-    typedef RS_ERROR rs_sendFrameFn(StreamHandle streamHandle, SenderFrameType frameType, SenderFrameTypeData data, const FrameResponseData* frameData); // publish a frame buffer which was generated from the associated tracking and timing information.
+    typedef RS_ERROR rs_sendFrameFn(StreamHandle streamHandle, const SenderFrame* data, const void* frameData); // publish a frame buffer which was generated from the associated tracking and timing information.
 
-    typedef RS_ERROR rs_releaseImageFn(SenderFrameType frameType, SenderFrameTypeData data); // release any references to image (e.g. before deletion)
+    typedef RS_ERROR rs_releaseImageFn(const SenderFrame* image); // release any references to image (e.g. before deletion)
 
     typedef RS_ERROR rs_logToD3Fn(const char * str);
     typedef RS_ERROR rs_sendProfilingDataFn(ProfilingEntry* entries, int count);
@@ -423,6 +466,7 @@ public:
         {
             free(const_cast<char*>(schema.engineName));
             free(const_cast<char*>(schema.engineVersion));
+            free(const_cast<char*>(schema.pluginVersion));
             free(const_cast<char*>(schema.info));
             for (size_t i = 0; i < schema.channels.nChannels; ++i)
                 free(const_cast<char*>(schema.channels.channels[i]));
@@ -453,6 +497,7 @@ public:
         {
             schema.engineName = _strdup(EPIC_PRODUCT_NAME);
             schema.engineVersion = _strdup(TCHAR_TO_UTF8(ENGINE_VERSION_STRING));
+            schema.pluginVersion = _strdup(RS_PLUGIN_VERSION);
             schema.info = _strdup(TCHAR_TO_UTF8(*GetDefault<UGeneralProjectSettings>()->Description));
             schema.channels.nChannels = 0;
             schema.channels.channels = nullptr;
@@ -475,6 +520,25 @@ public:
 
         Schema schema;
     };
+    
+    struct FSkeletalLayout
+    {
+        uint32_t version;
+        TArray<FString> jointNames;
+        TArray<SkeletonJointDesc> joints;
+    };
+
+    struct FSkeletalPose
+    {
+        uint64_t layoutId;
+        uint32_t layoutVersion;
+        FVector3f rootPosition;
+        FQuat4f rootOrientation;
+        TArray<SkeletonJointPose> joints;
+    };
+
+    using FAnimTarget = TSoftObjectPtr<USkeleton>;
+    using FAnimDataKey = FSoftObjectPath;
 
 public: // d3renderstream.h API, but loaded dynamically.
     rs_registerLoggingFuncFn* rs_registerLoggingFunc = nullptr;
@@ -501,11 +565,14 @@ public: // d3renderstream.h API, but loaded dynamically.
     rs_beginFollowerFrameFn* rs_beginFollowerFrame = nullptr;
     rs_getFrameParametersFn* rs_getFrameParameters = nullptr;
     rs_getFrameImageDataFn* rs_getFrameImageData = nullptr;
-    rs_getFrameImageFn* rs_getFrameImage = nullptr;
+    rs_getFrameImageFn* rs_getFrameImage2 = nullptr;
     rs_getFrameTextFn* rs_getFrameText = nullptr;
+    rs_getSkeletonLayoutFn* rs_getSkeletonLayout = nullptr;
+    rs_getSkeletonJointNamesFn* rs_getSkeletonJointNames = nullptr;
+    rs_getSkeletonJointPosesFn* rs_getSkeletonJointPoses = nullptr;
     rs_getFrameCameraFn* rs_getFrameCamera = nullptr;
-    rs_sendFrameFn* rs_sendFrame = nullptr;
-    rs_releaseImageFn* rs_releaseImage = nullptr;
+    rs_sendFrameFn* rs_sendFrame2 = nullptr;
+    rs_releaseImageFn* rs_releaseImage2 = nullptr;
     rs_logToD3Fn* rs_logToD3 = nullptr;
     rs_sendProfilingDataFn* rs_sendProfilingData = nullptr;
     rs_setNewStatusMessageFn* rs_setNewStatusMessage = nullptr;

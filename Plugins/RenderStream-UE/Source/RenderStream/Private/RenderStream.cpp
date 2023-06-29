@@ -625,6 +625,15 @@ void FRenderStreamModule::ApplyCameraData(FRenderStreamViewportInfo& info, const
         CineCamera->Filmback.SensorWidth = cameraData.sensorX;
         CineCamera->Filmback.SensorHeight = cameraData.sensorY;
         CineCamera->SetCurrentFocalLength(cameraData.focalLength); // RecalcDerivedData
+
+        // Apply depth of field parameters
+        if (cameraData.aperture > 0)
+            CineCamera->CurrentAperture = cameraData.aperture;
+        if (cameraData.focusDistance > 0)
+        {
+            CineCamera->FocusSettings.FocusMethod = ECameraFocusMethod::Manual;
+            CineCamera->FocusSettings.ManualFocusDistance = FUnitConversion::Convert(cameraData.focusDistance, EUnit::Meters, FRenderStreamModule::distanceUnit());
+        }
     }
     else if (CameraComponent)
     {
@@ -888,6 +897,7 @@ void FRenderStreamModule::OnActorSpawned(AActor* InActor)
         InActor->SetActorHiddenInGame(true);
         HideDefaultPawns();
     }
+    OnActorSpawnedDelegate.Broadcast(InActor);
 }
 
 void FRenderStreamModule::HideDefaultPawns()
@@ -1041,6 +1051,28 @@ FRenderStreamViewportInfo& FRenderStreamModule::GetViewportInfo(FString const& V
         return *(*Info);
     
     return *ViewportInfos.Add(ViewportId, MakeShareable<FRenderStreamViewportInfo>(new FRenderStreamViewportInfo()));
+}
+
+void FRenderStreamModule::PushAnimDataToSource(const RenderStreamLink::FAnimDataKey& Key, const FString& SubjectName, const RenderStreamLink::FSkeletalLayout& Layout, const RenderStreamLink::FSkeletalPose& Pose)
+{
+    SkeletalParamNames.Emplace(Key, SubjectName);
+    SkeletalLayouts.Emplace(SubjectName, Layout);
+    SkeletalPoses.Emplace(SubjectName, Pose);
+}
+
+const FName* FRenderStreamModule::GetSkeletalParamName(const RenderStreamLink::FAnimDataKey& Key) const
+{
+    return SkeletalParamNames.Find(Key);
+}
+
+const RenderStreamLink::FSkeletalLayout* FRenderStreamModule::GetSkeletalLayout(const FName& SubjectName) const
+{
+    return SkeletalLayouts.Find(SubjectName);
+}
+
+const RenderStreamLink::FSkeletalPose* FRenderStreamModule::GetSkeletalPose(const FName& SubjectName) const
+{
+    return SkeletalPoses.Find(SubjectName);
 }
 
 /*static*/ FRenderStreamModule* FRenderStreamModule::Get()
