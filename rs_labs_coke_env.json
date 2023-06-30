@@ -30,6 +30,27 @@
                     "dmxType": 2,
                     "noSequence": false,
                     "readOnly": false
+                },
+                {
+                    "group": "Default",
+                    "displayName": "Screen_Fade",
+                    "key": "Screen_Fade",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 1.0,
+                    "step": 1.0,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 1.0
+                    },
+                    "options": [
+                        "Off",
+                        "On"
+                    ],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
                 }
             ]
         },
