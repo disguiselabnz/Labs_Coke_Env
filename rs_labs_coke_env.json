@@ -11,50 +11,6 @@
     ],
     "schema": [
         {
-            "name": "Coke_Env_02",
-            "parameters": [
-                {
-                    "group": "Default",
-                    "displayName": "Render_Target",
-                    "key": "Render_Target",
-                    "type": 1,
-                    "min": 0.0,
-                    "max": 0.0,
-                    "step": 0.0,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 0.0
-                    },
-                    "options": [],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                },
-                {
-                    "group": "Default",
-                    "displayName": "Screen_Fade",
-                    "key": "Screen_Fade",
-                    "type": 0,
-                    "min": 0.0,
-                    "max": 1.0,
-                    "step": 1.0,
-                    "defaultValue": {
-                        "index": 0,
-                        "data": 1.0
-                    },
-                    "options": [
-                        "Off",
-                        "On"
-                    ],
-                    "dmxOffset": -1,
-                    "dmxType": 2,
-                    "noSequence": false,
-                    "readOnly": false
-                }
-            ]
-        },
-        {
             "name": "Coke_Env",
             "parameters": [
                 {
@@ -320,6 +276,50 @@
         {
             "name": "default",
             "parameters": []
+        },
+        {
+            "name": "Coke_Env_02",
+            "parameters": [
+                {
+                    "group": "Default",
+                    "displayName": "Render_Target",
+                    "key": "Render_Target",
+                    "type": 1,
+                    "min": 0.0,
+                    "max": 0.0,
+                    "step": 0.0,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 0.0
+                    },
+                    "options": [],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                },
+                {
+                    "group": "Default",
+                    "displayName": "Screen_Fade",
+                    "key": "Screen_Fade",
+                    "type": 0,
+                    "min": 0.0,
+                    "max": 1.0,
+                    "step": 1.0,
+                    "defaultValue": {
+                        "index": 0,
+                        "data": 1.0
+                    },
+                    "options": [
+                        "Off",
+                        "On"
+                    ],
+                    "dmxOffset": -1,
+                    "dmxType": 2,
+                    "noSequence": false,
+                    "readOnly": false
+                }
+            ]
         }
     ]
 }
